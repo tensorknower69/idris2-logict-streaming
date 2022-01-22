@@ -1,0 +1,44 @@
+package tensorknower69-logict-streaming
+version = 1.0.0.0
+authors = "tensorknower69"
+-- maintainers =
+license = "MIT"
+-- brief =
+-- readme =
+-- homepage =
+-- sourceloc =
+-- bugtracker =
+
+-- packages to add to search path
+depends = tensorknower69-logict, tensorknower69-streaming
+
+-- modules to install
+modules = Control.Monad.Logic.Streaming
+
+-- main file (i.e. file to load at REPL)
+-- main =
+
+-- name of executable
+-- executable =
+-- opts =
+sourcedir = "src"
+-- builddir =
+-- outputdir =
+
+-- script to run before building
+-- prebuild =
+
+-- script to run after building
+-- postbuild =
+
+-- script to run after building, before installing
+-- preinstall =
+
+-- script to run after installing
+-- postinstall =
+
+-- script to run before cleaning
+-- preclean =
+
+-- script to run after cleaning
+-- postclean =
