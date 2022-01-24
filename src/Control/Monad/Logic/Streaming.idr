@@ -1,21 +1,17 @@
 module Control.Monad.Logic.Streaming
 
+import Control.Monad.Error.Interface
 import Control.Monad.Identity
+import Control.Monad.Reader.Interface
+import Control.Monad.State.Interface
 import Control.Monad.Trans
 import Streaming
 import public Control.Monad.Logic.Interface
 
-export
-data LogicT : (Type -> Type) -> Type -> Type where
-  MkLogicT : Stream (Of a) m () -> LogicT m a
-
 public export
-Logic : Type -> Type
-Logic = LogicT Identity
-
-export
-observe : LogicT m a -> Stream (Of a) m ()
-observe (MkLogicT z) = z
+record LogicT (m : Type -> Type) (a : Type) where
+  constructor MkLogicT
+  observe : Stream (Of a) m ()
 
 export
 Monad m => Functor (LogicT m) where
@@ -48,3 +44,19 @@ Monad m => MonadLogic (LogicT m) where
 export
 HasIO m => HasIO (LogicT m) where
   liftIO = lift . liftIO
+
+export
+MonadError e m => MonadError e (LogicT m) where
+  throwError e = lift $ throwError e
+  z `catchError` f = MkLogicT $ observe z `catchError` observe . f
+
+export
+MonadState s m => MonadState s (LogicT m) where
+  put = lift . put
+  get = lift get
+  state f = lift (state f)
+
+export
+MonadReader s m => MonadReader s (LogicT m) where
+  ask = lift ask
+  local f z = MkLogicT $ local f (observe z)
